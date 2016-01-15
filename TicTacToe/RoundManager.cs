@@ -8,7 +8,7 @@ namespace TicTacToe
 {
     //Is able to keep track of score over multiple games.
     //Is responsible for setting up the players and creating a gameBoard each round.
-    class RoundManager
+    public class RoundManager
     {
         int numPlayers;
         int numRounds;
@@ -33,7 +33,29 @@ namespace TicTacToe
             else
                 gameBoard.resetBoard();
 
+            //Only Human players atm
+            for (int i = 0; i < numPlayers; i++)
+            {
+                playerList[i] = new HumanPlayer(gameBoard);
+            }
 
+            do
+            {
+                playGame();
+
+                Console.WriteLine("Play Another? (y/n)");
+                if (Console.ReadLine().Equals("y"))
+                {
+                    donePlaying = false;
+                    gameBoard.resetBoard();
+                }
+
+                else
+                {
+                    donePlaying = true;
+                }
+
+            } while (!donePlaying);
 
             return donePlaying;
         }
@@ -42,21 +64,28 @@ namespace TicTacToe
         private void playGame()
         {
             bool roundOver = false;
+            int currentPlayer = -1;
 
-            while (!roundOver)
+            for (currentPlayer = 0; currentPlayer < playerList.Length && !roundOver; currentPlayer++)
             {
-                playerList[0].takeTurn();
-                roundOver = gameBoard.checkForWinner('X');
+                playerList[currentPlayer].takeTurn();
+                roundOver = gameBoard.checkForWinner();
                 gameBoard.printBoard();
-                if (!roundOver)
+
+                //reset to player 1 if we run out of players.
+                if (currentPlayer + 1 == playerList.Length)
                 {
-                    playerList[1].takeTurn();
-                    roundOver = gameBoard.checkForWinner('O');
-                    gameBoard.printBoard();
+                    currentPlayer = -1;
                 }
             }
 
+            //Previous player won the game.
+            if (currentPlayer > 0)
+                currentPlayer--; 
+            else if (currentPlayer == 0)
+                currentPlayer = playerList.Length - 1;
 
+            Console.WriteLine(playerList[currentPlayer].myName + "Wins!");
         }
     }
 }

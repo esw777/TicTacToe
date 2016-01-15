@@ -12,7 +12,6 @@ namespace TicTacToe
         {
             int numPlayers = 0;
             bool validInput = false;
-            bool gameOver = false;
 
             Console.WriteLine("Welcome to Tic-Tac-Toe!");
 
@@ -34,13 +33,8 @@ namespace TicTacToe
             }
 
             //Starts the game.
-            Console.WriteLine("DEBUG: numPlayers = " + numPlayers);
             RoundManager roundManager = new RoundManager(numPlayers);
-            while (!gameOver)
-            {
-                gameOver = roundManager.nextRound();
-            }
-
+            roundManager.nextRound();
         }
     }
 }

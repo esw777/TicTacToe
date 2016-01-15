@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicTacToe
 {
-    class AIPlayer : Player
+    public class AIPlayer : Player
     {
         public AIPlayer(GameBoard gameBoard) : base(gameBoard)
         {
