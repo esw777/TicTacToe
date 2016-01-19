@@ -18,7 +18,7 @@ namespace TicTacToe
         public string myName { get; private set; }
 
         //How many rounds this play has won.
-        public int myNumberOfRoundWins { get; private set; } = 0;
+        public int myNumberOfRoundWins { get; set; } = 0;
 
         //constructor
         public Player(GameBoard gameBoard)

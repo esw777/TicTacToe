@@ -64,6 +64,7 @@ namespace TicTacToe
         private void playGame()
         {
             bool roundOver = false;
+            bool gameIsADraw = false;
             int currentPlayer = -1;
 
             for (currentPlayer = 0; currentPlayer < playerList.Length && !roundOver; currentPlayer++)
@@ -72,6 +73,12 @@ namespace TicTacToe
                 roundOver = gameBoard.checkForWinner();
                 gameBoard.printBoard();
 
+                if (gameBoard.checkForDraw())
+                {
+                    roundOver = true;
+                    gameIsADraw = true;
+                }
+
                 //reset to player 1 if we run out of players.
                 if (currentPlayer + 1 == playerList.Length)
                 {
@@ -79,13 +86,22 @@ namespace TicTacToe
                 }
             }
 
-            //Previous player won the game.
-            if (currentPlayer > 0)
-                currentPlayer--; 
-            else if (currentPlayer == 0)
-                currentPlayer = playerList.Length - 1;
+            if (gameIsADraw)
+            {
+                Console.WriteLine("Game is a Draw!");
+            }
 
-            Console.WriteLine(playerList[currentPlayer].myName + "Wins!");
+            else
+            {
+                //Previous player won the game.
+                if (currentPlayer > 0)
+                    currentPlayer--;
+                else if (currentPlayer == 0)
+                    currentPlayer = playerList.Length - 1;
+
+                playerList[currentPlayer].myNumberOfRoundWins++;
+                Console.WriteLine(playerList[currentPlayer].myName + "Wins!");
+            }
         }
     }
 }

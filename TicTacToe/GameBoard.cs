@@ -8,17 +8,25 @@ namespace TicTacToe
 {
     public class GameBoard
     {
-        private char[,] gameBoard { get; }
-        private int width { get; }
-        private int height { get; }
         private char emptySpaceChar = ' ';
-
+        private char[,] gameBoard { get;}
+        public int width { get; private set; }
+        public int height { get; private set; }
+        private int turnsTaken { get; set; }
 
         public GameBoard(int width = 3, int height = 3)
         {
             this.width = width;
             this.height = height;
             gameBoard = new char[width, height];
+            resetBoard();
+        }
+
+        public GameBoard(GameBoard in_gameBoard)
+        {
+            this.width = in_gameBoard.width;
+            this.height = in_gameBoard.height;
+            gameBoard = in_gameBoard.getGameBoard();
             resetBoard();
         }
 
@@ -31,7 +39,6 @@ namespace TicTacToe
             {
                 isValidMove = false;
                 Console.WriteLine("AddPiece: Invalid piece position");
-                //Console.WriteLine("x = " + x + ", y = " + y + ", char = " + gameBoard[x, y]);
             }
 
             else
@@ -40,7 +47,24 @@ namespace TicTacToe
                 isValidMove = true;
             }
 
+            if (isValidMove)
+            {
+                turnsTaken++;
+            }
+
             return isValidMove;
+        }
+
+        public bool checkForDraw()
+        {
+            bool result = false;
+
+            if (turnsTaken == width * height)
+            {
+                result = true;
+            }
+
+            return result;
         }
 
         //Returns true if there are numberInARow playerPieces in a row on the gameBoard.
@@ -115,6 +139,7 @@ namespace TicTacToe
                     gameBoard[x, y] = emptySpaceChar;
                 }
             }
+            turnsTaken = 0;
         }
 
         //Prints gameBoard to console.
